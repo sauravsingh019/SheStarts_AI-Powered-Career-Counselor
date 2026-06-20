@@ -14,6 +14,24 @@ let roadmapData     = null;
 let scoreData       = null;
 let coachHistory    = [];
 
+let serverKeysConfig = { gemini: false, nvidia: false, openrouter: false };
+
+async function checkServerKeys() {
+  try {
+    const response = await fetch('/api/config');
+    if (response.ok) {
+      const data = await response.json();
+      serverKeysConfig = {
+        gemini: !!data.gemini,
+        nvidia: !!data.nvidia,
+        openrouter: !!data.openrouter
+      };
+    }
+  } catch (err) {
+    console.log("Could not check backend server keys (normal for local runs):", err.message);
+  }
+}
+
 // ── Helpers ────────────────────────────────────────────────────────────
 function $(id)  { return document.getElementById(id); }
 function html(id, content) { $(id).innerHTML = content; }
@@ -123,6 +141,8 @@ window.addEventListener('load', async () => {
     triggerTypewriter();
     animateStatsCounters();
   }, 200);
+
+  await checkServerKeys();
 
   // Load all three keys from localStorage
   const savedGemini = localStorage.getItem('gemini_api_key');
@@ -256,7 +276,7 @@ function updateApiStatusBadges() {
 
   const statusGemini = $('status-gemini');
   if (statusGemini) {
-    if (geminiKey) {
+    if (geminiKey || serverKeysConfig.gemini) {
       statusGemini.textContent = 'Active';
       statusGemini.className = 'api-status-badge active';
     } else {
@@ -267,7 +287,7 @@ function updateApiStatusBadges() {
 
   const statusNvidia = $('status-nvidia');
   if (statusNvidia) {
-    if (nvidiaKey) {
+    if (nvidiaKey || serverKeysConfig.nvidia) {
       statusNvidia.textContent = 'Active';
       statusNvidia.className = 'api-status-badge active';
     } else {
@@ -278,7 +298,7 @@ function updateApiStatusBadges() {
 
   const statusOpenRouter = $('status-openrouter');
   if (statusOpenRouter) {
-    if (openRouterKey) {
+    if (openRouterKey || serverKeysConfig.openrouter) {
       statusOpenRouter.textContent = 'Active';
       statusOpenRouter.className = 'api-status-badge active';
     } else {
@@ -565,21 +585,9 @@ function loading(id, show) {
 // AI PROVIDERS & MULTI-AGENT ROUTER
 // ══════════════════════════════════════════
 async function callGemini(promptText, systemInstruction = '', model = 'gemini-3.5-flash') {
-  let apiKey = ($('f-apikey') ? $('f-apikey').value.trim() : '') || userData.apiKey || localStorage.getItem('gemini_api_key') || '';
+  const apiKey = ($('f-apikey') ? $('f-apikey').value.trim() : '') || userData.apiKey || localStorage.getItem('gemini_api_key') || '';
   if (!apiKey) {
-    const enteredKey = prompt('Gemini API Key is missing. Please paste your Google Gemini API Key here (it will be saved to your browser cache):');
-    if (enteredKey && enteredKey.trim()) {
-      apiKey = enteredKey.trim();
-      userData.apiKey = apiKey;
-      localStorage.setItem('gemini_api_key', apiKey);
-      const keyInput = $('f-apikey');
-      if (keyInput) {
-        keyInput.value = apiKey;
-      }
-      updateApiStatusBadges();
-    } else {
-      throw new Error('No API key provided. Please configure your Google Gemini API Key first.');
-    }
+    throw new Error('Google Gemini API Key is missing from the environment. Please configure it in your .env file or Vercel Settings.');
   }
 
   const models = [model, 'gemini-3.5-flash', 'gemini-3.1-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
@@ -617,21 +625,9 @@ async function callGemini(promptText, systemInstruction = '', model = 'gemini-3.
 
 
 async function callNvidiaNIM(promptText, systemInstruction = '', model = 'meta/llama-3.3-70b-instruct') {
-  let apiKey = ($('api-key-nvidia') ? $('api-key-nvidia').value.trim() : '') || userData.nvidiaKey || localStorage.getItem('nvidia_nim_api_key') || '';
+  const apiKey = ($('api-key-nvidia') ? $('api-key-nvidia').value.trim() : '') || userData.nvidiaKey || localStorage.getItem('nvidia_nim_api_key') || '';
   if (!apiKey) {
-    const enteredKey = prompt('NVIDIA NIM API Key is missing. Please paste your NVIDIA NIM API Key here:');
-    if (enteredKey && enteredKey.trim()) {
-      apiKey = enteredKey.trim();
-      userData.nvidiaKey = apiKey;
-      localStorage.setItem('nvidia_nim_api_key', apiKey);
-      const keyInput = $('api-key-nvidia');
-      if (keyInput) {
-        keyInput.value = apiKey;
-      }
-      updateApiStatusBadges();
-    } else {
-      throw new Error('No NVIDIA NIM API key configured.');
-    }
+    throw new Error('NVIDIA NIM API Key is missing from the environment. Please configure it in your .env file or Vercel Settings.');
   }
 
   const url = 'https://integrate.api.nvidia.com/v1/chat/completions';
@@ -670,21 +666,9 @@ async function callNvidiaNIM(promptText, systemInstruction = '', model = 'meta/l
 }
 
 async function callOpenRouter(promptText, systemInstruction = '', model = 'deepseek/deepseek-chat') {
-  let apiKey = ($('api-key-openrouter') ? $('api-key-openrouter').value.trim() : '') || userData.openRouterKey || localStorage.getItem('openrouter_api_key') || '';
+  const apiKey = ($('api-key-openrouter') ? $('api-key-openrouter').value.trim() : '') || userData.openRouterKey || localStorage.getItem('openrouter_api_key') || '';
   if (!apiKey) {
-    const enteredKey = prompt('OpenRouter API Key is missing. Please paste your OpenRouter API Key here:');
-    if (enteredKey && enteredKey.trim()) {
-      apiKey = enteredKey.trim();
-      userData.openRouterKey = apiKey;
-      localStorage.setItem('openrouter_api_key', apiKey);
-      const keyInput = $('api-key-openrouter');
-      if (keyInput) {
-        keyInput.value = apiKey;
-      }
-      updateApiStatusBadges();
-    } else {
-      throw new Error('No OpenRouter API key configured.');
-    }
+    throw new Error('OpenRouter API Key is missing from the environment. Please configure it in your .env file or Vercel Settings.');
   }
 
   const url = 'https://openrouter.ai/api/v1/chat/completions';

@@ -303,39 +303,35 @@
         <div class="api-settings-panel">
           <div class="api-settings-header" onclick="toggleSettingsPanel()">
             <div style="display:flex; align-items:center; gap:8px;">
-              <span style="font-size:16px;">⚙️</span>
-              <span style="font-weight:600; font-size:13.5px; color:var(--color-text-primary);">AI Providers & Settings</span>
+              <span style="font-size:16px;">🛡️</span>
+              <span style="font-weight:600; font-size:13.5px; color:var(--color-text-primary);">AI Providers & Environment Status</span>
             </div>
             <span id="settings-toggle-icon" style="font-size:12px; color:var(--color-text-secondary); transition: transform 0.2s;">▶</span>
           </div>
           <div class="api-settings-body hidden" id="api-settings-body">
             <p style="font-size:12px; color:var(--color-text-secondary); margin-bottom:12px; line-height:1.5;">
-              SheStarts runs as a heterogeneous multi-agent system. Different agents execute on different models. Enter your API keys below or add them to your <code>.env</code> file. Missing keys will fall back to Google Gemini automatically.
+              SheStarts runs securely using environment-only variables (Vercel Serverless environment variables on production, or local <code>.env</code>/<code>env.txt</code> files for development).
             </p>
             
-            <div class="api-field-group">
-              <label class="api-field-label">
-                <span>Google Gemini API Key (Primary & Fallback)</span>
-                <span class="api-status-badge missing" id="status-gemini">Missing</span>
-              </label>
-              <input id="f-apikey" type="password" class="api-field-input" placeholder="AIzaSy..." />
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: rgba(255,255,255,0.03); border-radius: 6px;">
+                <span style="font-size: 13px; font-weight: 500; color: var(--color-text-primary);">Google Gemini (Primary & Fallback)</span>
+                <span class="api-status-badge missing" id="status-gemini">Checking...</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: rgba(255,255,255,0.03); border-radius: 6px;">
+                <span style="font-size: 13px; font-weight: 500; color: var(--color-text-primary);">NVIDIA NIM (SkillCoach & JobReadiness)</span>
+                <span class="api-status-badge fallback" id="status-nvidia">Checking...</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: rgba(255,255,255,0.03); border-radius: 6px;">
+                <span style="font-size: 13px; font-weight: 500; color: var(--color-text-primary);">OpenRouter (Roadmap, Interview, Risk)</span>
+                <span class="api-status-badge fallback" id="status-openrouter">Checking...</span>
+              </div>
             </div>
 
-            <div class="api-field-group">
-              <label class="api-field-label">
-                <span>NVIDIA NIM API Key (SkillCoach, JobReadiness)</span>
-                <span class="api-status-badge fallback" id="status-nvidia">Gemini Fallback</span>
-              </label>
-              <input id="api-key-nvidia" type="password" class="api-field-input" placeholder="nvapi-..." />
-            </div>
-
-            <div class="api-field-group">
-              <label class="api-field-label">
-                <span>OpenRouter API Key (Roadmap, Interview, Risk)</span>
-                <span class="api-status-badge fallback" id="status-openrouter">Gemini Fallback</span>
-              </label>
-              <input id="api-key-openrouter" type="password" class="api-field-input" placeholder="sk-or-..." />
-            </div>
+            <!-- Hidden inputs to prevent any scripts depending on them from breaking -->
+            <input id="f-apikey" type="hidden" />
+            <input id="api-key-nvidia" type="hidden" />
+            <input id="api-key-openrouter" type="hidden" />
           </div>
         </div>
 
