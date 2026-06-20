@@ -1,4 +1,5 @@
 # SheStarts – AI-Powered Career Counselor
+🌐 Live Demo: https://she-starts-ai-powered-career-counse.vercel.app/
 
 SheStarts is an AI-powered career counseling platform designed to help women confidently restart their careers after an employment break. The platform combines intelligent career recommendations, skill gap analysis, resume understanding, interview coaching, and job application assistance into a single personalized experience.
 
