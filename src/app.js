@@ -373,22 +373,6 @@ async function parseResumeText() {
     return;
   }
 
-  const apiKey = ($('f-apikey') ? $('f-apikey').value.trim() : '') || userData.apiKey || localStorage.getItem('gemini_api_key') || '';
-  if (!apiKey) {
-    const enteredKey = prompt('Gemini API Key is missing. Please paste your Google Gemini API Key here (it will be saved to your browser cache):');
-    if (enteredKey && enteredKey.trim()) {
-      const trimmed = enteredKey.trim();
-      userData.apiKey = trimmed;
-      localStorage.setItem('gemini_api_key', trimmed);
-      const keyInput = $('f-apikey');
-      if (keyInput) {
-        keyInput.value = trimmed;
-      }
-      parseResumeText();
-    }
-    return;
-  }
-
   loading('parse-loading', true);
   $('btn-parse-resume').disabled = true;
 
@@ -411,7 +395,7 @@ ${textContent}
 `;
 
   try {
-    const rawResult = await callGemini(apiPrompt, "You are a precise data extractor. Return ONLY valid JSON matching the exact schema.");
+    const rawResult = await callAgentLLM(null, 'ProfileParserAgent', apiPrompt, "You are a precise data extractor. Return ONLY valid JSON matching the exact schema.");
     const parsed = parseJSON(rawResult);
 
     if (parsed) {
@@ -581,8 +565,22 @@ function loading(id, show) {
 // AI PROVIDERS & MULTI-AGENT ROUTER
 // ══════════════════════════════════════════
 async function callGemini(promptText, systemInstruction = '', model = 'gemini-3.5-flash') {
-  const apiKey = ($('f-apikey') ? $('f-apikey').value.trim() : '') || userData.apiKey || localStorage.getItem('gemini_api_key') || '';
-  if (!apiKey) throw new Error('No API key provided. Please configure your Google Gemini API Key first.');
+  let apiKey = ($('f-apikey') ? $('f-apikey').value.trim() : '') || userData.apiKey || localStorage.getItem('gemini_api_key') || '';
+  if (!apiKey) {
+    const enteredKey = prompt('Gemini API Key is missing. Please paste your Google Gemini API Key here (it will be saved to your browser cache):');
+    if (enteredKey && enteredKey.trim()) {
+      apiKey = enteredKey.trim();
+      userData.apiKey = apiKey;
+      localStorage.setItem('gemini_api_key', apiKey);
+      const keyInput = $('f-apikey');
+      if (keyInput) {
+        keyInput.value = apiKey;
+      }
+      updateApiStatusBadges();
+    } else {
+      throw new Error('No API key provided. Please configure your Google Gemini API Key first.');
+    }
+  }
 
   const models = [model, 'gemini-3.5-flash', 'gemini-3.1-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
   let lastError = null;
@@ -619,8 +617,22 @@ async function callGemini(promptText, systemInstruction = '', model = 'gemini-3.
 
 
 async function callNvidiaNIM(promptText, systemInstruction = '', model = 'meta/llama-3.3-70b-instruct') {
-  const apiKey = ($('api-key-nvidia') ? $('api-key-nvidia').value.trim() : '') || userData.nvidiaKey || localStorage.getItem('nvidia_nim_api_key') || '';
-  if (!apiKey) throw new Error('No NVIDIA NIM API key configured.');
+  let apiKey = ($('api-key-nvidia') ? $('api-key-nvidia').value.trim() : '') || userData.nvidiaKey || localStorage.getItem('nvidia_nim_api_key') || '';
+  if (!apiKey) {
+    const enteredKey = prompt('NVIDIA NIM API Key is missing. Please paste your NVIDIA NIM API Key here:');
+    if (enteredKey && enteredKey.trim()) {
+      apiKey = enteredKey.trim();
+      userData.nvidiaKey = apiKey;
+      localStorage.setItem('nvidia_nim_api_key', apiKey);
+      const keyInput = $('api-key-nvidia');
+      if (keyInput) {
+        keyInput.value = apiKey;
+      }
+      updateApiStatusBadges();
+    } else {
+      throw new Error('No NVIDIA NIM API key configured.');
+    }
+  }
 
   const url = 'https://integrate.api.nvidia.com/v1/chat/completions';
   const messages = [];
@@ -658,8 +670,22 @@ async function callNvidiaNIM(promptText, systemInstruction = '', model = 'meta/l
 }
 
 async function callOpenRouter(promptText, systemInstruction = '', model = 'deepseek/deepseek-chat') {
-  const apiKey = ($('api-key-openrouter') ? $('api-key-openrouter').value.trim() : '') || userData.openRouterKey || localStorage.getItem('openrouter_api_key') || '';
-  if (!apiKey) throw new Error('No OpenRouter API key configured.');
+  let apiKey = ($('api-key-openrouter') ? $('api-key-openrouter').value.trim() : '') || userData.openRouterKey || localStorage.getItem('openrouter_api_key') || '';
+  if (!apiKey) {
+    const enteredKey = prompt('OpenRouter API Key is missing. Please paste your OpenRouter API Key here:');
+    if (enteredKey && enteredKey.trim()) {
+      apiKey = enteredKey.trim();
+      userData.openRouterKey = apiKey;
+      localStorage.setItem('openrouter_api_key', apiKey);
+      const keyInput = $('api-key-openrouter');
+      if (keyInput) {
+        keyInput.value = apiKey;
+      }
+      updateApiStatusBadges();
+    } else {
+      throw new Error('No OpenRouter API key configured.');
+    }
+  }
 
   const url = 'https://openrouter.ai/api/v1/chat/completions';
   const messages = [];
@@ -1017,22 +1043,6 @@ async function runAnalysis() {
 
   const workPref = Array.from(document.querySelectorAll('#f-work-pref .chip.selected')).map(c => c.textContent).join(', ');
   const skills = Array.from(document.querySelectorAll('#f-skills-chips .chip.selected')).map(c => c.textContent).join(', ');
-
-  if (!apiKey) {
-    const enteredKey = prompt('Gemini API Key is missing. Please paste your Google Gemini API Key here (it will be saved to your browser cache for next time):');
-    if (enteredKey && enteredKey.trim()) {
-      const trimmed = enteredKey.trim();
-      userData.apiKey = trimmed;
-      localStorage.setItem('gemini_api_key', trimmed);
-      const keyInput = $('f-apikey');
-      if (keyInput) {
-        keyInput.value = trimmed;
-      }
-      // Re-trigger the analysis automatically with the new key!
-      runAnalysis();
-    }
-    return;
-  }
 
   userData = { name, role, gap, edu, field, country, workPref, skills, hours, timeline, apiKey };
 

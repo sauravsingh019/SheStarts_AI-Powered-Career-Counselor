@@ -1,92 +1,147 @@
-# SheStarts — Platform Architecture Document
+# SheStarts — Platform Architecture & System Design
 
-SheStarts is a fully client-side, single-page web application that provides personalized AI-powered career counseling through a **Heterogeneous Multi-Agent AI System** (9 specialized agents). It runs entirely in the user's browser, making direct API requests to Google Gemini, NVIDIA NIM, and OpenRouter, requiring zero backend server infrastructure.
+SheStarts is a modern, AI-powered career guidance platform built as a **Single Page Application (SPA)** that delivers personalized career counseling through a **Heterogeneous Multi-Agent AI Architecture** comprising **nine specialized AI agents**. The platform intelligently routes tasks to multiple Large Language Models (LLMs) across different providers, ensuring optimal performance, cost efficiency, and high availability.
+
+The application is designed with a **server-light architecture**. Users interact entirely through the browser, while secure API communication is handled through a lightweight serverless proxy in production, eliminating the need for maintaining dedicated backend infrastructure.
 
 ---
 
-## 1. System Topology
+# 1. System Architecture
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────┐
-│                           USER BROWSER (SPA)                             │
+│                         USER BROWSER (Single Page App)                   │
 │                                                                          │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐ │
-│  │  Home    │→ │Assessment│→ │ Careers  │→ │ Roadmap  │→ │Dashboard │ │
-│  │  (Hero)  │  │ (Settings│  │+ Skill   │  │(30/60/90)│  │+AI Coach │ │
-│  └──────────┘  │  Panel)  │  │  Gap     │  └──────────┘  │+Job Asst │ │
-│       ↑        └──────────┘  └──────────┘                 │+Voice    │ │
-│  ┌──────────┐                                             └──────────┘ │
-│  │ Floating │ ← Available on ALL pages (bottom-right corner)           │
-│  │ Bot 🤖  │                                                          │
-│  └──────────┘                                                          │
-│                     ↕ Dynamic Agent API Requests                         │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌────────────┐  │
+│  │  Home    │→ │Assessment│→ │ Careers  │→ │ Roadmap  │→ │ Dashboard  │  │
+│  │  Landing │  │ & Profile│  │ & Skills │  │ 30/60/90 │  │ AI Coach   │  │
+│  └──────────┘  └──────────┘  └──────────┘  └──────────┘  │ Job Tools   │  │
+│        ↑                                                  │ Voice AI    │  │
+│  ┌─────────────┐                                          └────────────┘  │
+│  │ Floating AI │   Available Across All Application Pages               │
+│  │ Assistant   │                                                        │
+│  └─────────────┘                                                        │
+│                                                                          │
+│              Dynamic Multi-Agent LLM Request Routing                     │
 └──────────────────────────────────────────────────────────────────────────┘
-                      ↕                                   ↕
-        ┌───────────────────────────┐       ┌───────────────────────────┐
-        │     Google Gemini API     │       │      NVIDIA NIM API       │
-        │    gemini-3.5-flash       │       │ llama-3.3-70b-instruct    │
-        └───────────────────────────┘       └───────────────────────────┘
-                      ↕
-        ┌───────────────────────────┐
-        │      OpenRouter API       │
-        │ deepseek/deepseek-chat    │
-        │ llama-3-8b-instruct:free  │
-        └───────────────────────────┘
+                         │                 │                  │
+                         ▼                 ▼                  ▼
+                 Google Gemini      NVIDIA NIM        OpenRouter
 ```
 
 ---
 
-## 2. Heterogeneous Multi-Agent Orchestration
+# 2. Heterogeneous Multi-Agent AI Orchestration
 
-To showcase advanced AI/ML thinking and model routing, the counselor partitions tasks across three distinct LLM providers. If any provider's API key is missing or fails, the agent automatically falls back to Google Gemini to guarantee 100% uptime.
+Rather than relying on a single language model, SheStarts distributes responsibilities among specialized AI agents, each optimized for a particular task and routed to the most suitable LLM provider. This heterogeneous architecture improves response quality, reduces operational costs, and increases overall system resilience.
 
-### Model & Provider Routing Table
+To ensure uninterrupted service availability, every external provider includes an automatic fallback mechanism. Whenever a provider becomes unavailable, encounters rate limits, or lacks a configured API key, requests are seamlessly redirected to Google Gemini.
 
-| Agent Name | Role | Primary Provider | Primary Model | Fallback Provider |
-|---|---|---|---|---|
-| **ProfileAnalystAgent** | Profile validation & sanitation | *Local JS Rules* | *N/A* | *N/A* |
-| **CareerResearchAgent** | Role recommendation & matchmaking | **Google Gemini** | `gemini-3.5-flash` | None (auto-retries on older Gemini models) |
-| **SkillCoachAgent** | Skill gap analysis & scores generation | **NVIDIA NIM** | `meta/llama-3.3-70b-instruct` | **Google Gemini** (`gemini-3.5-flash`) |
-| **RoadmapPlannerAgent** | 30/60/90 day curriculum generation | **OpenRouter** | `meta-llama/llama-3-8b-instruct:free` | **Google Gemini** (`gemini-3.5-flash`) |
-| **InterviewCoachAgent** | Conversational mock interviewer | **OpenRouter** | `deepseek/deepseek-chat` | **Google Gemini** (`gemini-3.5-flash`) |
-| **GeneralBotAgent** | Floating Q&A chatbot assistant | **Google Gemini** | `gemini-3.5-flash` | None (standard fallback) |
-| **JobApplicationAgent** | Tailored cover letter & resume optimizer | **Google Gemini** | `gemini-3.5-flash` | None (standard fallback) |
-| **JobReadinessAgent** | Career path readiness predictor | **NVIDIA NIM** | `meta/llama-3.3-70b-instruct` | **Google Gemini** (`gemini-3.5-flash`) |
-| **CareerRiskAgent** | Career transition risk assessor | **OpenRouter** | `deepseek/deepseek-chat` | **Google Gemini** (`gemini-3.5-flash`) |
+## AI Agent Routing Matrix
 
----
-
-## 3. Data Flow & Security
-
-```
-User Input (Form / Resume Paste)
-  ↓
-In-Memory userData Object
-  ↓
-callAgentLLM(AgentName, Prompt, SystemPrompt)
-  ↓
-Try POST /api/chat (Vercel Serverless Function Proxy)
-  ├── [If Vercel Production] ──► Reads process.env (GEMINI_API_KEY, NVIDIA_NIM_API_KEY, OPENROUTER_API_KEY)
-  │                               Executes server-side fetch securely to LLM endpoint (hides keys from client!)
-  └── [If Local Environment] ──► Fallback to browser direct fetch (reads local .env / env.txt / localStorage)
-  ↓
-parseJSON() [regex cleans markdown backticks if present]
-  ↓
-Updates UI sections and dashboard scores dynamically
-```
-
-### Security Details:
-- **Production Key Masking**: When deployed to Vercel, the keys are configured in Vercel's Environment Variables dashboard. The client browser only communicates with the `/api/chat` endpoint on the same origin; keys are never exposed to the client browser or the network tab.
-- **Local Fallback**: For local development, keys can be placed in `.env` / `env.txt` or entered manually in the settings panel, cached securely in `localStorage`.
-
+| AI Agent                | Primary Responsibility                                   | Primary Provider        | Model                    | Automatic Fallback    |
+| ----------------------- | -------------------------------------------------------- | ----------------------- | ------------------------ | --------------------- |
+| **ProfileAnalystAgent** | Profile validation, preprocessing, and data sanitization | Local JavaScript Engine | Rule-Based               | Not Required          |
+| **CareerResearchAgent** | Career recommendation and role matching                  | Google Gemini           | `gemini-3.5-flash`       | Legacy Gemini Models  |
+| **SkillCoachAgent**     | Skill-gap analysis and competency evaluation             | NVIDIA NIM              | `Llama-3.3-70B-Instruct` | Google Gemini         |
+| **RoadmapPlannerAgent** | Personalized 30/60/90-day learning roadmap generation    | OpenRouter              | `Llama-3-8B-Instruct`    | Google Gemini         |
+| **InterviewCoachAgent** | AI-powered mock interview sessions                       | OpenRouter              | `DeepSeek Chat`          | Google Gemini         |
+| **GeneralBotAgent**     | Universal conversational assistant                       | Google Gemini           | `gemini-3.5-flash`       | Standard Gemini Retry |
+| **JobApplicationAgent** | Resume optimization and cover letter generation          | Google Gemini           | `gemini-3.5-flash`       | Standard Gemini Retry |
+| **JobReadinessAgent**   | Career readiness assessment and employability scoring    | NVIDIA NIM              | `Llama-3.3-70B-Instruct` | Google Gemini         |
+| **CareerRiskAgent**     | Career transition risk assessment                        | OpenRouter              | `DeepSeek Chat`          | Google Gemini         |
 
 ---
 
-## 4. Reliability & Error Recovery
+# 3. Data Flow & Secure API Architecture
 
-| Mechanism | Description |
-|---|---|
-| **Dynamic Key Fallback** | If a NIM or OpenRouter key is omitted, the system routes the request to Google Gemini and marks the status as `Gemini Fallback`. |
-| **Runtime Auto-Retry** | If a remote provider returns an error (e.g. Rate Limit 429), the code catches the error and retries the request using Google Gemini. |
-| **JSON Cleaning** | LLMs (especially DeepSeek/Llama) can wrap JSON responses in markdown backticks. `parseJSON` uses boundary indices to extract clean JSON. |
-| **Voice Input Fallback** | Native SpeechRecognition is used; if unsupported, a text input fallback is active. |
+```
+User Input
+(Profile • Assessment • Resume)
+
+        │
+        ▼
+
+Client-side Validation
+(ProfileAnalystAgent)
+
+        │
+        ▼
+
+AI Orchestrator
+(callAgentLLM)
+
+        │
+        ▼
+
+Production Environment
+/api/chat (Serverless Proxy)
+
+        │
+        ├── Secure Environment Variables
+        │     • GEMINI_API_KEY
+        │     • NVIDIA_NIM_API_KEY
+        │     • OPENROUTER_API_KEY
+        │
+        ▼
+
+Selected AI Provider
+
+        │
+        ▼
+
+Response Processing
+(JSON Sanitization)
+
+        │
+        ▼
+
+Dynamic UI Updates
+(Dashboard • Roadmaps • Recommendations)
+```
+
+## Security Architecture
+
+### Production Deployment
+
+* API credentials are securely stored as **environment variables** within the deployment platform.
+* Client applications communicate exclusively with the **`/api/chat` serverless endpoint**.
+* API keys remain inaccessible to the browser, preventing exposure through source code, network traffic, or developer tools.
+* All external AI communication is executed server-side.
+
+### Local Development
+
+For development and testing purposes, API credentials may be supplied through:
+
+* `.env`
+* `env.txt`
+* Application Settings Panel
+
+Credentials entered manually are stored only within the browser's local storage for development convenience.
+
+---
+
+# 4. Reliability & Fault Tolerance
+
+The platform incorporates multiple reliability mechanisms to ensure uninterrupted AI services under varying runtime conditions.
+
+| Reliability Feature             | Description                                                                                                                                                                             |
+| ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Automatic Provider Failover** | Requests are transparently redirected to Google Gemini whenever NVIDIA NIM or OpenRouter is unavailable or not configured.                                                              |
+| **Runtime Retry Mechanism**     | Temporary failures such as HTTP 429 (Rate Limit) or network interruptions trigger automatic retry using the fallback provider.                                                          |
+| **Robust JSON Parsing**         | AI responses enclosed within Markdown code blocks are automatically sanitized before JSON deserialization, ensuring consistent downstream processing.                                   |
+| **Voice Input Fallback**        | Native browser Speech Recognition is utilized where supported. When unavailable, the application gracefully falls back to standard text input without interrupting the user experience. |
+
+---
+
+# 5. Key Architectural Highlights
+
+* **Single Page Application (SPA)** architecture with responsive UI.
+* **Nine specialized AI agents** operating under a heterogeneous multi-agent framework.
+* **Intelligent LLM routing** across Google Gemini, NVIDIA NIM, and OpenRouter.
+* **Automatic provider failover** for high availability.
+* **Serverless production architecture** with secure API key isolation.
+* **Zero dedicated backend maintenance** through lightweight serverless functions.
+* **Client-side preprocessing** for reduced latency and improved responsiveness.
+* **Secure environment-based credential management** for production deployments.
+* **Modular and extensible agent framework**, allowing future AI agents to be integrated with minimal architectural changes.
