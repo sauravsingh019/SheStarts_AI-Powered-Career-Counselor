@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SheStarts – AI Career Counselor for Women Restarting Careers</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="src/style.css" />
+</head>
+<body>
+  <div class="she-root">
+    
+    <!-- ── Navbar Header ── -->
+    <nav class="nav">
+      <div class="nav-logo">She<span>Starts</span></div>
+      <div class="nav-tabs">
+        <div class="nav-indicator" id="nav-indicator"></div>
+        <button class="nav-tab active" id="tab-nav-landing" onclick="showPage('landing')">Home</button>
+        <button class="nav-tab" id="tab-nav-assessment" onclick="showPage('assessment')">Assessment</button>
+        <button class="nav-tab" id="tab-nav-careers" onclick="showPage('careers')">Careers</button>
+        <button class="nav-tab" id="tab-nav-roadmap" onclick="showPage('roadmap')">Roadmap</button>
+        <button class="nav-tab" id="tab-nav-dashboard" onclick="showPage('dashboard')">Dashboard</button>
+      </div>
+    </nav>
+
+    <!-- ══════════ PAGE 1: LANDING PAGE ══════════ -->
+    <div id="page-landing" class="page active">
+      <div class="hero-grid-container">
+        <!-- Left Column: Content & Metrics -->
+        <div class="hero-content-left">
+          <span class="purple-pill">AI-Powered Career Guidance</span>
+          <h1 class="hero-title">Restart your career<br>with <em>confidence</em></h1>
+          <p class="hero-sub">Personalized career guidance and upskilling roadmaps for women returning to the workforce. Discover high-demand roles matching your background, identify key skill gaps, follow a tailored 90-day study plan, and practice with your personal AI interview coach to restart your career journey with confidence — all in minutes.</p>          
+          <div class="hero-buttons-row">
+            <button class="btn-primary btn-hero-highlight" onclick="showPage('assessment')">Start My Career Assessment →</button>
+            <button class="btn-outline" onclick="launchSampleUserDemo()">Try Priya's Demo</button>
+          </div>
+
+
+        </div>
+
+        <!-- Right Column: Premium Dashboard Graphic + Floating Badges -->
+        <div class="hero-graphic-right">
+          <div class="dashboard-mockup">
+            <div class="mockup-header">
+              <div class="mockup-dots"><span></span><span></span><span></span></div>
+              <div class="mockup-title">SheStarts AI platform</div>
+            </div>
+            <img src="womens_career_hero_1781684155024.png" alt="Career Restart Graphic" class="mockup-img" />
+          </div>
+
+          <!-- Floating Badges -->
+          <div class="floating-badge badge-1">
+            <div class="badge-icon">💡</div>
+            <div>
+              <div class="badge-title">AI Skill Gap Match</div>
+              <div class="badge-desc">75% readiness match</div>
+            </div>
+          </div>
+          
+          <div class="floating-badge badge-2">
+            <div class="badge-icon">📈</div>
+            <div>
+              <div class="badge-title">High Demand Roles</div>
+              <div class="badge-desc">HR Specialist, Tech...</div>
+            </div>
+          </div>
+
+          <div class="floating-badge badge-3">
+            <div class="badge-icon">📅</div>
+            <div>
+              <div class="badge-title">90-Day Plan</div>
+              <div class="badge-desc">Custom learning milestones</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-row">
+        <!-- Stat Card 1 -->
+        <div class="stat-card">
+          <div class="stat-icon-wrapper icon-purple">
+            <i class="ti ti-users" aria-hidden="true"></i>
+          </div>
+          <div class="stat-info">
+            <div class="stat-num" id="stat-count-women">0+</div>
+            <div class="stat-lbl">Women helped</div>
+          </div>
+        </div>
+        <!-- Stat Card 2 -->
+        <div class="stat-card">
+          <div class="stat-icon-wrapper icon-rose">
+            <i class="ti ti-briefcase" aria-hidden="true"></i>
+          </div>
+          <div class="stat-info">
+            <div class="stat-num" id="stat-count-jobs">0%</div>
+            <div class="stat-lbl">Got jobs in 90 days</div>
+          </div>
+        </div>
+        <!-- Stat Card 3 -->
+        <div class="stat-card">
+          <div class="stat-icon-wrapper icon-teal">
+            <i class="ti ti-compass" aria-hidden="true"></i>
+          </div>
+          <div class="stat-info">
+            <div class="stat-num" id="stat-count-paths">0+</div>
+            <div class="stat-lbl">Career paths</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <span class="purple-pill">What We Do</span>
+        <h2 class="section-title" style="margin-top:10px;">Everything you need to restart</h2>
+        <p class="section-sub">Our AI counselor handles the full journey — from self-discovery to job offer.</p>
+        <div class="feature-grid">
+          <div class="feature-card feat-purple">
+            <div class="feature-icon icon-purple"><i class="ti ti-brain" aria-hidden="true"></i></div>
+            <h3>Smart Assessment</h3>
+            <p>Understands your background, skills, and career goals in a guided conversation.</p>
+          </div>
+          <div class="feature-card feat-rose">
+            <div class="feature-icon icon-rose"><i class="ti ti-chart-bar" aria-hidden="true"></i></div>
+            <h3>Career Matching</h3>
+            <p>AI recommends roles based on your experience, market demand, and time constraints.</p>
+          </div>
+          <div class="feature-card feat-teal">
+            <div class="feature-icon icon-teal"><i class="ti ti-map" aria-hidden="true"></i></div>
+            <h3>30–60–90 Day Plan</h3>
+            <p>A week-by-week learning roadmap tailored to your availability and goals.</p>
+          </div>
+          <div class="feature-card feat-amber">
+            <div class="feature-icon icon-amber"><i class="ti ti-star" aria-hidden="true"></i></div>
+            <h3>Employability Score</h3>
+            <p>Track your readiness with an evolving score as you learn and grow.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <span class="purple-pill">How It Works</span>
+        <h2 class="section-title" style="margin-top:10px;">Your journey in 4 steps</h2>
+        <p class="section-sub">From career gap to career growth — here's how SheStarts guides you.</p>
+        <div class="journey-steps">
+          <div class="journey-step">
+            <div class="step-circle">1</div>
+            <div class="step-content">
+              <h4>Tell us about yourself</h4>
+              <p>Share your background, career break, skills, and what you want next.</p>
+            </div>
+          </div>
+          <div class="journey-step">
+            <div class="step-circle">2</div>
+            <div class="step-content">
+              <h4>Get AI career recommendations</h4>
+              <p>Receive 3–5 role suggestions with fit scores, salary range, and effort required.</p>
+            </div>
+          </div>
+          <div class="journey-step">
+            <div class="step-circle">3</div>
+            <div class="step-content">
+              <h4>See your skill gaps</h4>
+              <p>Understand exactly what skills you have vs. what the market needs.</p>
+            </div>
+          </div>
+          <div class="journey-step">
+            <div class="step-circle">4</div>
+            <div class="step-content">
+              <h4>Follow your learning roadmap</h4>
+              <p>Get a personalized 90-day plan with free resources, milestones, and support.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <span class="purple-pill">Stories</span>
+        <h2 class="section-title" style="margin-top:10px;">Women who restarted with SheStarts</h2>
+        <p class="section-sub">Read how returning candidates successfully navigated their return to the workforce.</p>
+        
+        <div class="testimonial-grid">
+          <!-- Testimonial 1 -->
+          <div class="testimonial-card">
+            <span class="quote-mark">“</span>
+            <p class="testimonial-text">After a 5-year gap, I had no idea where to start. SheStarts told me I was already 60% ready for a People Analytics role — I just needed 2 months of upskilling. I got hired within 10 weeks.</p>
+            <div class="testimonial-author">
+              <div class="author-avatar av-purple">PR</div>
+              <div class="author-meta">
+                <div class="author-name">Priya Rajan</div>
+                <div class="author-roles">
+                  <span class="role-badge current">Now: HR Tech Analyst</span>
+                  <span class="role-badge past">Was: HR Manager</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Testimonial 2 -->
+          <div class="testimonial-card">
+            <span class="quote-mark">“</span>
+            <p class="testimonial-text">The roadmap was so specific — week by week, what to learn, what to build. It felt like having a personal mentor who actually understood my situation as a mother returning to work.</p>
+            <div class="testimonial-author">
+              <div class="author-avatar av-rose">SN</div>
+              <div class="author-meta">
+                <div class="author-name">Sunita Nair</div>
+                <div class="author-roles">
+                  <span class="role-badge current">Now: UX Researcher</span>
+                  <span class="role-badge past">3-Year Break</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Testimonial 3 -->
+          <div class="testimonial-card">
+            <span class="quote-mark">“</span>
+            <p class="testimonial-text">Returning to coding after 6 years felt impossible. The skill gap analysis pointed me exactly to what had changed in Web development. Now working as a frontend dev.</p>
+            <div class="testimonial-author">
+              <div class="author-avatar av-teal">KS</div>
+              <div class="author-meta">
+                <div class="author-name">Kiran Sharma</div>
+                <div class="author-roles">
+                  <span class="role-badge current">Now: Frontend Developer</span>
+                  <span class="role-badge past">6-Year Break</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Testimonial 4 -->
+          <div class="testimonial-card">
+            <span class="quote-mark">“</span>
+            <p class="testimonial-text">I wanted a remote role that allowed me to manage my kid's school hours. SheStarts matched me to Product Operations. The 90-day plan kept me disciplined.</p>
+            <div class="testimonial-author">
+              <div class="author-avatar av-amber">NG</div>
+              <div class="author-meta">
+                <div class="author-name">Neha Gupta</div>
+                <div class="author-roles">
+                  <span class="role-badge current">Now: Product Operations</span>
+                  <span class="role-badge past">Was: Business Analyst</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer class="premium-footer">
+        <div class="footer-container">
+          <div class="footer-brand-col">
+            <div class="footer-logo">She<span>Starts</span></div>
+            <p class="brand-desc">Empowering women to restart their careers with personalized AI-driven guidance, skill gap analysis, and tailored roadmaps.</p>
+            <div class="footer-socials">
+              <a href="#" class="social-icon" aria-label="LinkedIn"><i class="ti ti-brand-linkedin"></i></a>
+              <a href="#" class="social-icon" aria-label="Twitter"><i class="ti ti-brand-twitter"></i></a>
+              <a href="#" class="social-icon" aria-label="Instagram"><i class="ti ti-brand-instagram"></i></a>
+            </div>
+          </div>
+          
+          <div class="footer-links-col">
+            <h4>Platform</h4>
+            <ul>
+              <li><a href="#" onclick="showPage('assessment'); return false;">AI Assessment</a></li>
+              <li><a href="#" onclick="showPage('careers'); return false;">Career Matching</a></li>
+              <li><a href="#" onclick="showPage('roadmap'); return false;">90-Day Roadmap</a></li>
+              <li><a href="#" onclick="showPage('dashboard'); return false;">Dashboard</a></li>
+            </ul>
+          </div>
+          
+          <div class="footer-links-col">
+            <h4>Resources</h4>
+            <ul>
+              <li><a href="#">Success Stories</a></li>
+              <li><a href="#">Upskilling Guides</a></li>
+              <li><a href="#">Partner Employers</a></li>
+              <li><a href="#">AI Coach Help</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-links-col">
+            <h4>Community</h4>
+            <ul>
+              <li><a href="#">Join Network</a></li>
+              <li><a href="#">Mentor Circle</a></li>
+              <li><a href="#">Events & Meetups</a></li>
+              <li><a href="#">Career Blog</a></li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="footer-bottom">
+          <p>&copy; 2026 SheStarts. Built with empathy, dedication and Gemini AI.</p>
+          <div class="footer-legal">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- ══════════ PAGE 2: ASSESSMENT ══════════ -->
+    <div id="page-assessment" class="page">
+      <div style="padding: 32px 24px; max-width: 560px; margin: 0 auto;">
+        
+        <!-- API & Multi-Agent settings panel -->
+        <div class="api-settings-panel">
+          <div class="api-settings-header" onclick="toggleSettingsPanel()">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="font-size:16px;">⚙️</span>
+              <span style="font-weight:600; font-size:13.5px; color:var(--color-text-primary);">AI Providers & Settings</span>
+            </div>
+            <span id="settings-toggle-icon" style="font-size:12px; color:var(--color-text-secondary); transition: transform 0.2s;">▶</span>
+          </div>
+          <div class="api-settings-body hidden" id="api-settings-body">
+            <p style="font-size:12px; color:var(--color-text-secondary); margin-bottom:12px; line-height:1.5;">
+              SheStarts runs as a heterogeneous multi-agent system. Different agents execute on different models. Enter your API keys below or add them to your <code>.env</code> file. Missing keys will fall back to Google Gemini automatically.
+            </p>
+            
+            <div class="api-field-group">
+              <label class="api-field-label">
+                <span>Google Gemini API Key (Primary & Fallback)</span>
+                <span class="api-status-badge missing" id="status-gemini">Missing</span>
+              </label>
+              <input id="f-apikey" type="password" class="api-field-input" placeholder="AIzaSy..." />
+            </div>
+
+            <div class="api-field-group">
+              <label class="api-field-label">
+                <span>NVIDIA NIM API Key (SkillCoach, JobReadiness)</span>
+                <span class="api-status-badge fallback" id="status-nvidia">Gemini Fallback</span>
+              </label>
+              <input id="api-key-nvidia" type="password" class="api-field-input" placeholder="nvapi-..." />
+            </div>
+
+            <div class="api-field-group">
+              <label class="api-field-label">
+                <span>OpenRouter API Key (Roadmap, Interview, Risk)</span>
+                <span class="api-status-badge fallback" id="status-openrouter">Gemini Fallback</span>
+              </label>
+              <input id="api-key-openrouter" type="password" class="api-field-input" placeholder="sk-or-..." />
+            </div>
+          </div>
+        </div>
+
+
+        <div class="stepper-track-container">
+          <div class="stepper-line-progress" id="stepper-progress-line"></div>
+          <div class="stepper-step active" id="st-1" onclick="jumpToStep(1)">
+            <div class="step-num-node">1</div>
+            <div class="step-label-node">Profile</div>
+          </div>
+          <div class="stepper-step" id="st-2" onclick="jumpToStep(2)">
+            <div class="step-num-node">2</div>
+            <div class="step-label-node">Goals</div>
+          </div>
+          <div class="stepper-step" id="st-3" onclick="jumpToStep(3)">
+            <div class="step-num-node">3</div>
+            <div class="step-label-node">Skills</div>
+          </div>
+          <div class="stepper-step" id="st-4" onclick="jumpToStep(4)">
+            <div class="step-num-node">4</div>
+            <div class="step-label-node">Confirm</div>
+          </div>
+        </div>
+
+        <!-- Step 1: Background -->
+        <div id="assess-step-1" class="assess-step">
+          <div class="form-section-label">Step 1 of 4 · Background</div>
+          <h2 class="form-title">Tell us about your journey</h2>
+          <p class="form-subtitle">This helps our AI understand who you are and where you want to go.</p>
+          
+          <!-- Resume Upload Section -->
+          <div class="resume-upload-box">
+            <div class="upload-icon-circle"><i class="ti ti-file-description"></i></div>
+            <div class="upload-text-content">
+              <strong>Have a resume?</strong> Auto-fill the form with Gemini AI
+              <p>Upload a .TXT file or paste text to skip typing fields.</p>
+            </div>
+            <input type="file" id="resume-file-input" style="display: none;" accept=".txt" onchange="handleResumeUpload(event)" />
+            <div class="upload-actions">
+              <button class="btn-outline btn-sm" onclick="$('resume-file-input').click(); event.preventDefault();">Upload .TXT</button>
+              <button class="btn-outline btn-sm" onclick="togglePasteArea(); event.preventDefault();">Paste Text</button>
+            </div>
+          </div>
+          
+          <div class="paste-resume-container hidden" id="paste-resume-box">
+            <textarea class="form-input" id="resume-paste-text" placeholder="Paste your resume, LinkedIn profile bio, or text representation here..." style="min-height: 120px; font-family: monospace; font-size: 12px; margin-bottom: 10px;"></textarea>
+            <div style="display: flex; gap: 8px; justify-content: flex-end;">
+              <button class="btn-outline btn-sm" onclick="togglePasteArea(); event.preventDefault();">Cancel</button>
+              <button class="btn-primary btn-sm" onclick="parseResumeText(); event.preventDefault();" id="btn-parse-resume">AI Auto-Fill →</button>
+            </div>
+            <div id="parse-loading" class="loading hidden" style="margin-top: 8px; font-size: 12.5px;">
+              <div class="dot-pulse"><span></span><span></span><span></span></div>
+              Gemini parsing resume...
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">What is your name?</label>
+            <input class="form-input" id="f-name" type="text" placeholder="e.g. Priya Sharma" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">What was your previous role?</label>
+            <input class="form-input" id="f-role" type="text" placeholder="e.g. HR Manager, Software Engineer..."/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">How long was your career break?</label>
+            <select class="form-select" id="f-gap">
+              <option>Less than 1 year</option>
+              <option selected>1–3 years</option>
+              <option>3–5 years</option>
+              <option>5–7 years</option>
+              <option>More than 7 years</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">What is your highest education level?</label>
+            <select class="form-select" id="f-edu">
+              <option selected>Bachelor's degree</option>
+              <option>Master's degree</option>
+              <option>Diploma / certificate</option>
+              <option>PhD</option>
+              <option>High school</option>
+            </select>
+          </div>
+          <div class="form-nav">
+            <span class="step-counter">Step 1 of 4</span>
+            <button class="btn-primary" onclick="nextStep(2)">Continue →</button>
+          </div>
+        </div>
+
+        <!-- Step 2: Goals -->
+        <div id="assess-step-2" class="assess-step" style="display:none;">
+          <div class="form-section-label">Step 2 of 4 · Goals</div>
+          <h2 class="form-title">What does success look like?</h2>
+          <p class="form-subtitle">Help us understand your goals and constraints.</p>
+          <div class="form-group">
+            <label class="form-label">Where is your target job country?</label>
+            <select class="form-select" id="f-country">
+              <option selected>India</option>
+              <option>United States</option>
+              <option>United Kingdom</option>
+              <option>Canada</option>
+              <option>United Arab Emirates</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">What kind of work do you prefer?</label>
+            <div class="chip-group" id="f-work-pref">
+              <span class="chip selected" onclick="toggleChip(this)">Remote</span>
+              <span class="chip" onclick="toggleChip(this)">Hybrid</span>
+              <span class="chip" onclick="toggleChip(this)">In-office</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">How many hours can you study daily?</label>
+            <select class="form-select" id="f-hours">
+              <option>Less than 1 hour</option>
+              <option selected>2–3 hours</option>
+              <option>3–5 hours</option>
+              <option>Full-time (6+)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">When do you want to start earning?</label>
+            <select class="form-select" id="f-timeline">
+              <option>As soon as possible (1–2 months)</option>
+              <option selected>Within 3 months</option>
+              <option>3–6 months</option>
+              <option>6–12 months</option>
+            </select>
+          </div>
+          <div class="form-nav">
+            <button class="btn-back" onclick="nextStep(1)">← Back</button>
+            <span class="step-counter">Step 2 of 4</span>
+            <button class="btn-primary" onclick="nextStep(3)">Continue →</button>
+          </div>
+        </div>
+
+        <!-- Step 3: Skills & Major -->
+        <div id="assess-step-3" class="assess-step" style="display:none;">
+          <div class="form-section-label">Step 3 of 4 · Skills & Background</div>
+          <h2 class="form-title">What are your skills?</h2>
+          <p class="form-subtitle">Tell us about your study major and highlight existing skillsets.</p>
+          <div class="form-group">
+            <label class="form-label">Major/Field of Study</label>
+            <input class="form-input" id="f-field" placeholder="e.g. Human Resources, Business, Commerce" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" style="display:flex; justify-content:space-between; align-items:center;">
+              <span>AI Suggested Skills (Based on your role)</span>
+              <span id="role-detected-badge" style="font-size:11px; color:var(--color-primary); font-weight:600; background:rgba(124, 58, 237, 0.08); padding:2px 8px; border-radius:10px;">No role yet</span>
+            </label>
+            <div class="chip-group" id="f-dynamic-skills" style="margin-bottom: 16px; min-height: 32px; border: 1px dashed rgba(124, 58, 237, 0.15); padding: 8px; border-radius: var(--border-radius-md); background: rgba(124, 58, 237, 0.01);">
+              <span style="font-size: 12px; color: var(--color-text-secondary); width:100%; display:block; text-align:center;">Type your role in Step 1 to load custom recommendations here.</span>
+            </div>
+            
+            <label class="form-label">Select Skills You Have (Click multiple)</label>
+            <div class="chip-group" id="f-skills-chips">
+              <span class="chip selected" onclick="toggleChip(this)">Communication</span>
+              <span class="chip selected" onclick="toggleChip(this)">Team Management</span>
+              <span class="chip" onclick="toggleChip(this)">Excel / Sheets</span>
+              <span class="chip" onclick="toggleChip(this)">Recruiting</span>
+              <span class="chip" onclick="toggleChip(this)">Writing</span>
+              <span class="chip" onclick="toggleChip(this)">Project Mgmt</span>
+              <span class="chip" onclick="toggleChip(this)">Customer Service</span>
+              <span class="chip" onclick="toggleChip(this)">Onboarding</span>
+            </div>
+          </div>
+          <div class="form-nav">
+            <button class="btn-back" onclick="nextStep(2)">← Back</button>
+            <span class="step-counter">Step 3 of 4</span>
+            <button class="btn-primary" onclick="nextStep(4)">Continue →</button>
+          </div>
+        </div>
+
+        <!-- Step 4: Summary Confirmation -->
+        <div id="assess-step-4" class="assess-step" style="display:none;">
+          <div class="form-section-label">Step 4 of 4 · Confirmation</div>
+          <h2 class="form-title">Confirm and Analyze</h2>
+          <p class="form-subtitle">Review your summary parameters before activating the AI Counselor.</p>
+          <div style="background: #F5F3FF; border-radius: var(--border-radius-lg); padding: 20px; margin: 20px 0;">
+            <div style="display:flex; gap:12px; align-items:flex-start; margin-bottom:14px;">
+              <div style="color:#7C3AED; font-size:18px; margin-top:2px;"><i class="ti ti-user-check" aria-hidden="true"></i></div>
+              <div>
+                <div style="font-size:13px; font-weight:500; color:#5B21B6;">Profile Details</div>
+                <div style="font-size:13px; color:#6D28D9;" id="confirm-profile-details">HR Specialist / Recruiter</div>
+              </div>
+            </div>
+            <div style="display:flex; gap:12px; align-items:flex-start; margin-bottom:14px;">
+              <div style="color:#7C3AED; font-size:18px; margin-top:2px;"><i class="ti ti-target" aria-hidden="true"></i></div>
+              <div>
+                <div style="font-size:13px; font-weight:500; color:#5B21B6;">Goal Preferences</div>
+                <div style="font-size:13px; color:#6D28D9;" id="confirm-goal-details">Remote work · Within 3 months</div>
+              </div>
+            </div>
+            <div style="display:flex; gap:12px; align-items:flex-start;">
+              <div style="color:#7C3AED; font-size:18px; margin-top:2px;"><i class="ti ti-book" aria-hidden="true"></i></div>
+              <div>
+                <div style="font-size:13px; font-weight:500; color:#5B21B6;">Upskilling budget</div>
+                <div style="font-size:13px; color:#6D28D9;" id="confirm-budget-details">2–3 hours per day</div>
+              </div>
+            </div>
+          </div>
+          <!-- Multi-Agent Workflow Panel -->
+          <div class="agent-workflow-panel" id="agent-panel" style="display:none;">
+            <div class="agent-workflow-title">🤖 Heterogeneous Multi-Agent AI System</div>
+            <div class="agent-row waiting" id="agent-1"><span class="agent-icon">🔍</span> <span>ProfileAnalystAgent <small style="color:var(--color-text-secondary); opacity:0.8;">(Local)</small></span><span style="margin-left:auto;font-size:11px;" id="agent-1-status">Waiting...</span></div>
+            <div class="agent-row waiting" id="agent-2"><span class="agent-icon">🎯</span> <span>CareerResearchAgent <small style="color:var(--color-text-secondary); opacity:0.8;">(Gemini 3.5)</small></span><span style="margin-left:auto;font-size:11px;" id="agent-2-status">Waiting...</span></div>
+            <div class="agent-row waiting" id="agent-3"><span class="agent-icon">📊</span> <span>SkillCoachAgent <small style="color:var(--color-text-secondary); opacity:0.8;">(NVIDIA Llama 3.3)</small></span><span style="margin-left:auto;font-size:11px;" id="agent-3-status">Waiting...</span></div>
+            <div class="agent-row waiting" id="agent-4"><span class="agent-icon">🗺️</span> <span>RoadmapPlannerAgent <small style="color:var(--color-text-secondary); opacity:0.8;">(OpenRouter Llama 3)</small></span><span style="margin-left:auto;font-size:11px;" id="agent-4-status">Waiting...</span></div>
+            <div class="agent-row waiting" id="agent-5"><span class="agent-icon">💬</span> <span>InterviewCoachAgent <small style="color:var(--color-text-secondary); opacity:0.8;">(OpenRouter DeepSeek)</small></span><span style="margin-left:auto;font-size:11px;" id="agent-5-status">Waiting...</span></div>
+            <div class="agent-row waiting" id="agent-6"><span class="agent-icon">📈</span> <span>JobReadinessAgent <small style="color:var(--color-text-secondary); opacity:0.8;">(NVIDIA Llama 3.3)</small></span><span style="margin-left:auto;font-size:11px;" id="agent-6-status">Waiting...</span></div>
+            <div class="agent-row waiting" id="agent-7"><span class="agent-icon">⚠️</span> <span>CareerRiskAgent <small style="color:var(--color-text-secondary); opacity:0.8;">(OpenRouter DeepSeek)</small></span><span style="margin-left:auto;font-size:11px;" id="agent-7-status">Waiting...</span></div>
+          </div>
+
+          <!-- Loader placed directly above buttons row, centered -->
+          <div id="analyze-loading" class="loading hidden" style="justify-content: center; margin-bottom: 16px; width: 100%;">
+            <div class="dot-pulse"><span></span><span></span><span></span></div>
+            Analyzing profile...
+          </div>
+
+          <div class="form-nav" style="margin-top: 16px;">
+            <button class="btn-back" onclick="nextStep(3)">← Edit</button>
+            <button class="btn-primary" id="btn-run-analysis" onclick="runAnalysis()">Get My Career Matches →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ PAGE 3: RECOMMENDATIONS ══════════ -->
+    <div id="page-careers" class="page">
+      <div style="padding: 28px 24px;">
+        <div style="text-align: center; margin-bottom: 28px;">
+          <span class="purple-pill">Based on your profile</span>
+          <h2 class="section-title" style="margin-top:10px;">Your career matches</h2>
+          <p class="section-sub">AI found the following roles that fit your background, timeline, and location constraints.</p>
+        </div>
+        
+        <div class="recommendation-grid" id="careers-container">
+          <p style="grid-column: 1/-1; color: var(--color-text-secondary); text-align: center;">Please complete the Career Assessment first.</p>
+        </div>
+
+        <div style="margin-top:28px; border-top: 0.5px solid var(--color-border-tertiary); padding-top:24px;" id="skill-gap-section-container" class="hidden">
+          <h3 style="font-size:16px; font-weight:500; margin-bottom:16px;" id="skill-gap-title">Skill Gap Analysis</h3>
+          <div class="skill-section">
+            <p style="font-size:12px; color:var(--color-text-secondary); margin-bottom:14px;">Comparing your current skillset against the requirements for this role</p>
+            <div class="skill-bars" id="skill-bars-list"></div>
+            
+            <h4 style="font-size:13px; font-weight:500; margin-bottom:10px;">Priority Gaps to Bridge:</h4>
+            <div id="priority-gaps-list"></div>
+
+            <div style="margin-top:24px;">
+              <button class="btn-primary" onclick="showPage('roadmap')">View My Roadmap →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ PAGE 4: ROADMAP ══════════ -->
+    <div id="page-roadmap" class="page">
+      <div style="padding: 28px 24px;">
+        <div style="text-align: center; margin-bottom: 28px;">
+          <span class="purple-pill" id="roadmap-path-pill">Career Path</span>
+          <h2 class="section-title" style="margin-top:10px;">Your learning roadmap</h2>
+          <p class="section-sub" id="roadmap-hours-subtitle">Studying 2–3 hours/day.</p>
+        </div>
+
+        <div class="roadmap-tabs">
+          <button class="rm-tab active" id="btn-rm-30" onclick="switchRoadmapTab('30')">30 Days</button>
+          <button class="rm-tab" id="btn-rm-60" onclick="switchRoadmapTab('60')">60 Days</button>
+          <button class="rm-tab" id="btn-rm-90" onclick="switchRoadmapTab('90')">90 Days</button>
+        </div>
+
+        <div id="roadmap-container-all">
+          <p style="color: var(--color-text-secondary);">Please select a career role in the Careers page first.</p>
+        </div>
+        <div style="margin-top: 24px;">
+          <button class="btn-primary" onclick="showPage('dashboard')">Go to Career Dashboard →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ PAGE 5: DASHBOARD ══════════ -->
+    <div id="page-dashboard" class="page">
+      <div style="padding: 28px 24px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;">
+          <div>
+            <div style="font-size:12px; color:var(--color-text-secondary); margin-bottom:2px;">Welcome back</div>
+            <h2 style="font-size:18px; font-weight:500;" id="dashboard-user-name">Your Career Dashboard</h2>
+          </div>
+          <div style="background:#EDE9FE; color:#7C3AED; font-size:12px; padding:6px 14px; border-radius:20px;">Day 1 of 90</div>
+        </div>
+
+        <div class="dashboard-header-container" style="display: flex; gap: 28px; align-items: center; margin-bottom: 32px; flex-wrap: wrap;">
+          <div class="score-ring-container" style="margin: 0; flex-shrink: 0; display: flex; justify-content: center;">
+            <svg viewBox="0 0 180 180" width="180" height="180" class="score-ring-svg">
+              <circle cx="90" cy="90" r="72" fill="none" stroke="#EDE9FE" stroke-width="14"/>
+              <circle cx="90" cy="90" r="72" fill="none" stroke="#7C3AED" stroke-width="14"
+                id="dashboard-score-circle"
+                stroke-dasharray="452" stroke-dashoffset="452" stroke-linecap="round"
+                transform="rotate(-90 90 90)" style="transition: stroke-dashoffset 0.8s ease;"/>
+              <text x="90" y="83" text-anchor="middle" fill="#7C3AED" font-size="32" font-weight="600" id="dashboard-score-text">0</text>
+              <text x="90" y="100" text-anchor="middle" fill="#888" font-size="11">/ 100</text>
+              <text x="90" y="118" text-anchor="middle" fill="#7C3AED" font-size="10" font-weight="500">Employability Score</text>
+            </svg>
+          </div>
+
+          <div class="dashboard-grid" style="flex: 1; margin: 0; min-width: 280px;">
+            <div class="dash-card"><div class="dash-num" id="dash-score-val">0</div><div class="dash-label">Employability Score</div></div>
+            <div class="dash-card"><div class="dash-num">1</div><div class="dash-label">Days Active</div></div>
+            <div class="dash-card"><div class="dash-num" id="dash-skills-val">0</div><div class="dash-label">Skills Identified</div></div>
+            <div class="dash-card"><div class="dash-num" id="dash-gaps-val">0</div><div class="dash-label">Priority Gaps</div></div>
+          </div>
+        </div>
+
+        <!-- Confidence Score Card -->
+        <div class="confidence-card" id="confidence-card" style="display:none;">
+          <div class="confidence-ring-wrap">
+            <svg viewBox="0 0 80 80" width="80" height="80">
+              <circle cx="40" cy="40" r="32" fill="none" stroke="#FECDD3" stroke-width="8"/>
+              <circle cx="40" cy="40" r="32" fill="none" stroke="#F43F5E" stroke-width="8"
+                id="confidence-circle" stroke-dasharray="201" stroke-dashoffset="201" stroke-linecap="round"
+                transform="rotate(-90 40 40)" style="transition: stroke-dashoffset 1s ease;"/>
+            </svg>
+          </div>
+          <div class="confidence-info">
+            <div class="confidence-label">✨ Confidence Score</div>
+            <div class="confidence-score-num" id="confidence-score-num">0</div>
+            <div class="confidence-desc" id="confidence-desc">Analyzing your readiness...</div>
+          </div>
+        </div>
+
+        <!-- Job Readiness Predictor -->
+        <div class="readiness-card" id="readiness-card" style="display:none;">
+          <div class="readiness-header">
+            <div class="readiness-icon">📈</div>
+            <div>
+              <div style="font-size:14px; font-weight:700; color:#065F46;">Job Readiness Predictor</div>
+              <div style="font-size:11.5px; color:#047857;">AI-powered timeline & probability analysis</div>
+            </div>
+          </div>
+          <div class="readiness-body">
+            <div class="readiness-metrics">
+              <div class="readiness-metric">
+                <div class="readiness-metric-num" id="readiness-probability">0%</div>
+                <div class="readiness-metric-label">Placement Probability</div>
+              </div>
+              <div class="readiness-metric">
+                <div class="readiness-metric-num" id="readiness-timeline">--</div>
+                <div class="readiness-metric-label">Est. Time to Job</div>
+              </div>
+              <div class="readiness-metric">
+                <div class="readiness-metric-num" id="readiness-level">--</div>
+                <div class="readiness-metric-label">Readiness Level</div>
+              </div>
+            </div>
+            <div class="readiness-steps" id="readiness-steps"></div>
+          </div>
+        </div>
+
+        <!-- Career Risk Analysis -->
+        <div class="risk-analysis-card" id="risk-analysis-card" style="display:none;">
+          <div class="risk-header">
+            <div class="risk-icon">⚠️</div>
+            <div>
+              <div style="font-size:14px; font-weight:700; color:#92400E;">Career Risk Analysis</div>
+              <div style="font-size:11.5px; color:#B45309;">Potential risks & mitigation strategies</div>
+            </div>
+          </div>
+          <div class="risk-body">
+            <div class="risk-level-bar" id="risk-level-bar">
+              <div class="risk-fill" id="risk-fill" style="width:0%;"></div>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:11px; color:#92400E; margin-bottom:16px;">
+              <span>Low Risk</span><span id="risk-level-text">Analyzing...</span><span>High Risk</span>
+            </div>
+            <div id="risk-items-list"></div>
+          </div>
+        </div>
+
+
+        <div class="ai-chat-box">
+          <div class="chat-header">
+            <div class="chat-avatar">✨</div>
+            <div>
+              <div class="chat-title">SheStarts AI Coach</div>
+              <div class="chat-status">Online · Ready to help</div>
+            </div>
+          </div>
+          <div class="chat-messages" id="chat-messages-container">
+            <div class="chat-msg msg-ai">
+              <div class="msg-bubble">Hello! Complete the Career assessment to activate the AI Coach and run mock interview sessions.</div>
+            </div>
+          </div>
+          <div class="chat-input-row">
+            <button class="btn-voice" id="voice-btn" onclick="toggleVoice()" title="Voice input"><i class="ti ti-microphone"></i></button>
+            <input class="chat-input" type="text" placeholder="Ask your AI coach anything..." id="chat-in" onkeydown="if(event.key==='Enter')sendCoachMessage()"/>
+            <button class="chat-send" onclick="sendCoachMessage()"><i class="ti ti-send" aria-hidden="true"></i></button>
+          </div>
+        </div>
+
+        <!-- Job Application Assistant -->
+        <div class="job-assist-box" id="job-assist-box" style="display:none;">
+          <div class="job-assist-header">
+            <div class="job-assist-icon">📋</div>
+            <div>
+              <div style="font-size:14.5px; font-weight:600;">Job Application Assistant</div>
+              <div style="font-size:11.5px; opacity:0.8;">AI-powered cover letter & application strategy</div>
+            </div>
+          </div>
+          <div class="job-assist-body">
+            <p style="font-size:12.5px; color:var(--color-text-secondary); margin-bottom:10px;">Paste the job description below and get a tailored cover letter, keywords, and strategy.</p>
+            <textarea class="job-assist-textarea" id="job-jd-input" placeholder="Paste job description here..."></textarea>
+            <div style="margin-top:12px; display:flex; gap:10px;">
+              <button class="btn-primary btn-sm" id="btn-job-assist" onclick="generateJobApplication()">Generate Application →</button>
+              <div id="job-assist-loading" class="loading hidden"><div class="dot-pulse"><span></span><span></span><span></span></div> Writing...</div>
+            </div>
+            <div id="job-assist-output" style="display:none;" class="job-assist-output">
+              <div class="job-output-section"><h4>📝 Cover Letter</h4><p id="jout-cover"></p></div>
+              <div class="job-output-section"><h4>💡 LinkedIn Headline</h4><p id="jout-headline"></p></div>
+              <div class="job-output-section"><h4>🔑 Top Keywords to Add</h4><p id="jout-keywords"></p></div>
+              <div class="job-output-section"><h4>🎯 Application Strategy</h4><p id="jout-strategy"></p></div>
+              <button class="btn-copy" onclick="copyJobOutput()">📋 Copy All</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Floating Bot Widget ── -->
+  <button class="floating-bot-btn" id="floating-bot-btn" onclick="toggleFloatingBot()" title="SheStarts AI Assistant">
+    <span id="floating-bot-icon">✨</span>
+    <div class="floating-bot-badge"></div>
+  </button>
+
+  <div class="floating-bot-popup" id="floating-bot-popup">
+    <div class="bot-popup-header">
+      <div class="bot-popup-avatar">✨</div>
+      <div>
+        <div class="bot-popup-title">SheStarts AI</div>
+        <div class="bot-popup-sub">🟢 Online · Ask me anything</div>
+      </div>
+      <button class="bot-popup-close" onclick="toggleFloatingBot()">✕</button>
+    </div>
+    <div class="bot-popup-messages" id="bot-popup-messages">
+      <div class="chat-msg msg-ai"><div class="msg-bubble" style="font-size:13px;">Hi! 👋 I'm your SheStarts AI assistant. Ask me anything about restarting your career, skills to learn, or how to use this platform!</div></div>
+    </div>
+    <div class="bot-popup-input-row">
+      <button class="btn-voice" id="bot-voice-btn" onclick="toggleBotVoice()" title="Voice input" style="width:32px;height:32px;font-size:14px;"><i class="ti ti-microphone"></i></button>
+      <input class="bot-popup-input" type="text" placeholder="Ask anything..." id="bot-chat-in" onkeydown="if(event.key==='Enter')sendBotMessage()"/>
+      <button class="chat-send" onclick="sendBotMessage()" style="width:32px;height:32px;"><i class="ti ti-send" style="font-size:14px;"></i></button>
+    </div>
+  </div>
+
+  <script src="src/app.js"></script>
+</body>
+</html>

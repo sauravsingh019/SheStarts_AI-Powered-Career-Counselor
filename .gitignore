@@ -1,0 +1,7 @@
+# Local environment files containing sensitive API keys
+.env
+env.txt
+
+# OS metadata
+.DS_Store
+Thumbs.db
