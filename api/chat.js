@@ -12,9 +12,18 @@ export default async function handler(req, res) {
   let activeProvider = provider;
   let activeModel = model;
 
-  const hasGemini = !!process.env.GEMINI_API_KEY;
-  const hasNvidia = !!process.env.NVIDIA_NIM_API_KEY;
-  const hasOpenRouter = !!process.env.OPENROUTER_API_KEY;
+  function isValidKey(key) {
+    if (!key) return false;
+    const trimmed = key.trim();
+    if (!trimmed) return false;
+    if (trimmed.toUpperCase().startsWith('YOUR_')) return false;
+    if (trimmed === 'your_nvidia_nim_api_key_here' || trimmed === 'your_openrouter_api_key_here') return false;
+    return true;
+  }
+
+  const hasGemini = isValidKey(process.env.GEMINI_API_KEY);
+  const hasNvidia = isValidKey(process.env.NVIDIA_NIM_API_KEY);
+  const hasOpenRouter = isValidKey(process.env.OPENROUTER_API_KEY);
 
   // Fall back to gemini if requested provider's key is missing
   if (activeProvider === 'nvidia' && !hasNvidia) {
@@ -31,7 +40,8 @@ export default async function handler(req, res) {
     if (!apiKey) {
       throw new Error('Gemini API Key is not configured in Vercel Environment Variables.');
     }
-    const targetModel = activeModel || 'gemini-3.5-flash';
+    // Force a valid Gemini model if falling back
+    const targetModel = activeModel && activeModel.startsWith('gemini') ? activeModel : 'gemini-3.5-flash';
     const url = `https://generativelanguage.googleapis.com/v1beta/models/${targetModel}:generateContent?key=${apiKey}`;
     
     const requestBody = {
